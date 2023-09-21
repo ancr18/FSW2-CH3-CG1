@@ -1,0 +1,19 @@
+{
+  "name": "challenge-3",
+  "version": "1.0.0",
+  "description": "Challenge Chapter 3",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ancr18/FSW2-CH1-CG3.git"
+  },
+  "author": "Ardiyansyah R",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ancr18/FSW2-CH1-CG3/issues"
+  },
+  "homepage": "https://github.com/ancr18/FSW2-CH1-CG3#readme"
+}
