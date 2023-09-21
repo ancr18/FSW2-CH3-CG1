@@ -1,0 +1,7 @@
+# FSW2 - CHALLENGE
+
+### CHAPTER 3
+
+#### POSTMAN
+
+![POSTMAN](img/POSTMAN-CH3-CG1.png)
