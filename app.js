@@ -25,11 +25,28 @@ const getListCars = (req, res) => {
   })
 }
 
+const getDetailCar = (req, res) => {
+  const id = req.params.id
+  const car = cars.find((el) => el.id === id)
+  if (!car) {
+    return res.status(404).json({
+      status: "failed",
+      message: "car not found",
+    })
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: { car },
+  })
+}
+
 // ROUTER CARS
 
 const carsRouter = express.Router()
 
 carsRouter.route("/").get(getListCars)
+carsRouter.route("/:id").get(getDetailCar)
 
 app.use("/api/v1/cars", carsRouter)
 
