@@ -4,6 +4,8 @@
   "description": "Challenge Chapter 3",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/ancr18/FSW2-CH1-CG3/issues"
   },
-  "homepage": "https://github.com/ancr18/FSW2-CH1-CG3#readme"
+  "homepage": "https://github.com/ancr18/FSW2-CH1-CG3#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
 }
