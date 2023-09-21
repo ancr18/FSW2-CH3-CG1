@@ -78,12 +78,33 @@ const updateCar = (req, res) => {
     })
   })
 }
+
+const deleteCar = (req, res) => {
+  const id = req.params.id
+  const carIndex = cars.findIndex((el) => el.id === id)
+  if (carIndex === -1) {
+    return res.status(404).json({
+      status: "failed",
+      message: `${id} is not found`,
+    })
+  }
+
+  cars.splice(carIndex, 1)
+  fs.writeFile(`${__dirname}/data/cars.json`, JSON.stringify(cars), (err) => {
+    res.status(200).json({
+      status: "success",
+      message: `success delete id : ${id}`,
+      data: null,
+    })
+  })
+}
+
 // ROUTER CARS
 
 const carsRouter = express.Router()
 
 carsRouter.route("/").get(getListCars).post(createCar)
-carsRouter.route("/:id").get(getDetailCar).put(updateCar)
+carsRouter.route("/:id").get(getDetailCar).put(updateCar).delete(deleteCar)
 
 app.use("/api/v1/cars", carsRouter)
 
