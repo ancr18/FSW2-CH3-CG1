@@ -2,6 +2,7 @@
 const fs = require("fs")
 const express = require("express")
 const morgan = require("morgan")
+const { create } = require("domain")
 const app = express()
 
 // port
@@ -41,11 +42,26 @@ const getDetailCar = (req, res) => {
   })
 }
 
+const createCar = (req, res) => {
+  const newId = cars[cars.length - 1].id + 1
+  const newData = Object.assign({ id: newId }, req.body)
+  cars.push(newData)
+  fs.writeFile(`${__dirname}/data/cars.json`, JSON.stringify(cars), (err) => {
+    res.status(201).json({
+      status: "success",
+      message: "create new car",
+      data: {
+        newData,
+      },
+    })
+  })
+}
+
 // ROUTER CARS
 
 const carsRouter = express.Router()
 
-carsRouter.route("/").get(getListCars)
+carsRouter.route("/").get(getListCars).post(createCar)
 carsRouter.route("/:id").get(getDetailCar)
 
 app.use("/api/v1/cars", carsRouter)
