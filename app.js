@@ -57,12 +57,33 @@ const createCar = (req, res) => {
   })
 }
 
+const updateCar = (req, res) => {
+  const id = req.params.id
+  const carIndex = cars.findIndex((el) => el.id === id)
+  if (carIndex === -1) {
+    return res.status(404).json({
+      status: "failed",
+      message: `${id} is not found`,
+    })
+  }
+
+  cars[carIndex] = { ...cars[carIndex], ...req.body }
+
+  fs.writeFile(`${__dirname}/data/cars.json`, JSON.stringify(cars), (err) => {
+    res.status(200).json({
+      status: "success",
+      data: {
+        cars: cars[carIndex],
+      },
+    })
+  })
+}
 // ROUTER CARS
 
 const carsRouter = express.Router()
 
 carsRouter.route("/").get(getListCars).post(createCar)
-carsRouter.route("/:id").get(getDetailCar)
+carsRouter.route("/:id").get(getDetailCar).put(updateCar)
 
 app.use("/api/v1/cars", carsRouter)
 
