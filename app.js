@@ -72,6 +72,7 @@ const updateCar = (req, res) => {
   fs.writeFile(`${__dirname}/data/cars.json`, JSON.stringify(cars), (err) => {
     res.status(200).json({
       status: "success",
+      message: "success update car",
       data: {
         cars: cars[carIndex],
       },
