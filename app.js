@@ -1,114 +1,21 @@
-// package
+// core module
 const fs = require("fs")
+
+// third package module
 const express = require("express")
 const morgan = require("morgan")
-const { create } = require("domain")
+
+const carRouter = require("./routes/carRoutes")
 const app = express()
 
 // port
-const port = process.env.port || 3000
 
 // middleware
 app.use(express.json())
 app.use(morgan("dev"))
 
 // cars data
-const cars = JSON.parse(fs.readFileSync(`${__dirname}/data/cars.json`))
 
-// API CARS
+app.use("/api/v1/cars", carRouter)
 
-const getListCars = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    data: {
-      cars,
-    },
-  })
-}
-
-const getDetailCar = (req, res) => {
-  const id = req.params.id
-  const car = cars.find((el) => el.id === id)
-  if (!car) {
-    return res.status(404).json({
-      status: "failed",
-      message: "car not found",
-    })
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: { car },
-  })
-}
-
-const createCar = (req, res) => {
-  const newId = cars[cars.length - 1].id + 1
-  const newData = Object.assign({ id: newId }, req.body)
-  cars.push(newData)
-  fs.writeFile(`${__dirname}/data/cars.json`, JSON.stringify(cars), (err) => {
-    res.status(201).json({
-      status: "success",
-      message: "create new car",
-      data: {
-        newData,
-      },
-    })
-  })
-}
-
-const updateCar = (req, res) => {
-  const id = req.params.id
-  const carIndex = cars.findIndex((el) => el.id === id)
-  if (carIndex === -1) {
-    return res.status(404).json({
-      status: "failed",
-      message: `${id} is not found`,
-    })
-  }
-
-  cars[carIndex] = { ...cars[carIndex], ...req.body }
-
-  fs.writeFile(`${__dirname}/data/cars.json`, JSON.stringify(cars), (err) => {
-    res.status(200).json({
-      status: "success",
-      message: "success update car",
-      data: {
-        cars: cars[carIndex],
-      },
-    })
-  })
-}
-
-const deleteCar = (req, res) => {
-  const id = req.params.id
-  const carIndex = cars.findIndex((el) => el.id === id)
-  if (carIndex === -1) {
-    return res.status(404).json({
-      status: "failed",
-      message: `${id} is not found`,
-    })
-  }
-
-  cars.splice(carIndex, 1)
-  fs.writeFile(`${__dirname}/data/cars.json`, JSON.stringify(cars), (err) => {
-    res.status(200).json({
-      status: "success",
-      message: `success delete id : ${id}`,
-      data: null,
-    })
-  })
-}
-
-// ROUTER CARS
-
-const carsRouter = express.Router()
-
-carsRouter.route("/").get(getListCars).post(createCar)
-carsRouter.route("/:id").get(getDetailCar).put(updateCar).delete(deleteCar)
-
-app.use("/api/v1/cars", carsRouter)
-
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`)
-})
+module.exports = app
